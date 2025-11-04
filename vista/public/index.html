@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PetSOS - Trae a Casa a Tu Mascota</title>
+    <link rel="stylesheet" href="/PROYECTO_FINAL/assets/css/styles.css" />
+    <link rel="stylesheet" href="/PROYECTO_FINAL/assets/css/puzzle.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- ============================================ -->
+    <!-- SCRIPT DE VERIFICACIÓN DE SESIÓN - INICIO -->
+    <!-- ============================================ -->
+    <script>
+      // Verificar si el usuario viene del login exitoso
+      window.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const loginSuccess = urlParams.get("login");
+        const userName = urlParams.get("user");
+
+        if (loginSuccess === "success" && userName) {
+          // Verificar la sesión con PHP
+          fetch("/PROYECTO_FINAL/get_session.php")
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.logged_in) {
+                // Guardar en sessionStorage para el frontend
+                sessionStorage.setItem(
+                  "petsos_user",
+                  JSON.stringify(data.user)
+                );
+
+                // Mostrar mensaje de bienvenida
+                showWelcomeMessage(data.user.name);
+
+                // Limpiar la URL
+                window.history.replaceState(
+                  {},
+                  document.title,
+                  "/PROYECTO_FINAL/vista/public/index.html"
+                );
+
+                // Actualizar la UI
+                updateUserInterface(data.user);
+              }
+            })
+            .catch((error) => {
+              console.error("Error al verificar sesión:", error);
+            });
+        } else {
+          // Verificar sesión existente
+          fetch("/PROYECTO_FINAL/get_session.php")
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.logged_in) {
+                sessionStorage.setItem(
+                  "petsos_user",
+                  JSON.stringify(data.user)
+                );
+                updateUserInterface(data.user);
+              }
+            })
+            .catch((error) => {
+              console.error("Error al verificar sesión:", error);
+            });
+        }
+      });
+
+      function showWelcomeMessage(name) {
+        const welcomeBox = document.createElement("div");
+        welcomeBox.style.cssText = `
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 10000;
+            animation: slideInRight 0.5s ease-out;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        `;
+        welcomeBox.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span>¡Bienvenido, ${name}!</span>
+            </div>
+        `;
+
+        document.body.appendChild(welcomeBox);
+
+        setTimeout(() => {
+          welcomeBox.style.animation = "slideOutRight 0.5s ease-out";
+          setTimeout(() => welcomeBox.remove(), 500);
+        }, 3000);
+      }
+
+      function updateUserInterface(user) {
+        // Actualizar el dropdown de perfil
+        const profileDropdown = document.querySelector(".profile-dropdown");
+        if (profileDropdown) {
+          profileDropdown.innerHTML = `
+                <div class="profile-avatar">
+                    <img src="${user.avatar}" alt="Avatar de ${user.name}">
+                </div>
+                <span>${user.name}</span>
+                <div class="dropdown-arrow"></div>
+            `;
+
+          // Agregar menú desplegable
+          profileDropdown.style.cursor = "pointer";
+          profileDropdown.onclick = toggleUserMenu;
+
+          // Crear el menú desplegable si no existe
+          if (!document.getElementById("userDropdownMenu")) {
+            const dropdownMenu = document.createElement("div");
+            dropdownMenu.id = "userDropdownMenu";
+            dropdownMenu.className = "user-dropdown-menu";
+            dropdownMenu.innerHTML = `
+                    <a href="/PROYECTO_FINAL/vista/public/perfil.html">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        Mi Perfil
+                    </a>
+                    <a href="/PROYECTO_FINAL/vista/public/mis-publicaciones.html">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        Mis Publicaciones
+                    </a>
+                    <a href="#" onclick="cerrarSesion(); return false;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        Cerrar Sesión
+                    </a>
+                `;
+            profileDropdown.appendChild(dropdownMenu);
+          }
+        }
+      }
+
+      function toggleUserMenu() {
+        const dropdown = document.getElementById("userDropdownMenu");
+        if (dropdown) {
+          dropdown.classList.toggle("active");
+        }
+      }
+
+      function cerrarSesion() {
+        if (confirm("¿Estás seguro de que quieres cerrar sesión?")) {
+          sessionStorage.removeItem("petsos_user");
+          window.location.href =
+            "/PROYECTO_FINAL/index.php?action=cerrarSesion";
+        }
+      }
+
+      // Cerrar dropdown al hacer clic fuera
+      document.addEventListener("click", function (e) {
+        const profileDropdown = document.querySelector(".profile-dropdown");
+        const dropdown = document.getElementById("userDropdownMenu");
+        if (
+          dropdown &&
+          profileDropdown &&
+          !profileDropdown.contains(e.target)
+        ) {
+          dropdown.classList.remove("active");
+        }
+      });
+
+      // Agregar estilos de animación y dropdown
+      const style = document.createElement("style");
+      style.textContent = `
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+
+        .profile-dropdown {
+            position: relative;
+        }
+
+        .user-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            min-width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .user-dropdown-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .user-dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            color: #334155;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .user-dropdown-menu a:hover {
+            background: #f8fafc;
+        }
+
+        .user-dropdown-menu a:last-child {
+            color: #ef4444;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .user-dropdown-menu a:last-child:hover {
+            background: #fef2f2;
+        }
+
+        .user-dropdown-menu svg {
+            flex-shrink: 0;
+        }
+    `;
+      document.head.appendChild(style);
+    </script>
+    <!-- ============================================ -->
+    <!-- FIN DEL SCRIPT DE VERIFICACIÓN DE SESIÓN -->
+    <!-- ============================================ -->
+
+    <!-- Header -->
+    <header class="header">
+      <nav class="navbar">
+        <div class="nav-left">
+          <div class="logo">
+            <div class="logo-icon">
+              <img
+                src="/PROYECTO_FINAL/assets/images/ImagenPrincipal.jpg"
+                alt="PetSOS Logo"
+              />
+            </div>
+            <span class="logo-text">PetSOS</span>
+          </div>
+          <ul class="nav-menu">
+            <li>
+              <a
+                href="/PROYECTO_FINAL/vista/public/perdidos.html"
+                class="nav-link"
+                >Perdidos</a
+              >
+            </li>
+            <li>
+              <a
+                href="/PROYECTO_FINAL/vista/public/encontrados.html"
+                class="nav-link"
+                >Encontrados</a
+              >
+            </li>
+            <li>
+              <a
+                href="/PROYECTO_FINAL/vista/public/refugios.html"
+                class="nav-link"
+                >Refugios</a
+              >
+            </li>
+            <li>
+              <a
+                href="/PROYECTO_FINAL/vista/public/recursos.html"
+                class="nav-link"
+                >Recursos</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="nav-center">
+          <div class="search-container">
+            <input
+              type="text"
+              placeholder="Buscar por ubicación, raza..."
+              class="search-input"
+            />
+            <div class="search-icon"></div>
+          </div>
+        </div>
+        <div class="nav-right">
+          <button class="publish-btn">Publicar Aviso</button>
+          <a href="#" class="map-view">Vista del Mapa</a>
+          <div class="notification-icon">
+            <img
+              src="/PROYECTO_FINAL/assets/images/notificacion.png"
+              alt="Notificaciones"
+            />
+          </div>
+          <div class="profile-dropdown">
+            <div class="profile-avatar">
+              <img
+                src="/PROYECTO_FINAL/assets/images/Perfill.webp"
+                alt="Avatar"
+              />
+            </div>
+            <span class="user-name">Invitado</span>
+            <div class="dropdown-arrow"></div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-background">
+        <img
+          src="/PROYECTO_FINAL/assets/images/perroYgatoo.jpg"
+          alt="Perro y gato juntos"
+          class="hero-background-image"
+        />
+      </div>
+      <div class="hero-content">
+        <h1 class="hero-title">Tráelos a Casa</h1>
+        <p class="hero-subtitle">
+          La forma más rápida de reunirte con tu mascota perdida. Reporta un
+          animal perdido o encontrado en minutos.
+        </p>
+        <div class="hero-buttons">
+          <button class="btn-primary">
+            <span class="btn-icon"></span>
+            Reportar Mascota Perdida
+          </button>
+          <button class="btn-secondary">
+            <span class="btn-icon-location"></span>
+            Reportar Mascota Encontrada
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="content-container">
+        <!-- Map Section -->
+        <section class="map-section">
+          <div class="map-container">
+            <div class="map-search">
+              <input
+                type="text"
+                placeholder="Buscar mapa por ciudad, código postal..."
+                class="map-search-input"
+              />
+              <div class="search-icon-small"></div>
+            </div>
+            <div class="map-placeholder">
+              <img
+                src="/PROYECTO_FINAL/assets/images/mapa.png"
+                alt="Mapa de mascotas perdidas y encontradas"
+              />
+            </div>
+          </div>
+
+          <!-- PUZZLE GAME SECTION -->
+          <div class="puzzle-game-section">
+            <div class="puzzle-header">
+              <h3>🐾 Puzzle de Mascotas</h3>
+              <p>¡Ordena las piezas mientras esperas noticias!</p>
+            </div>
+
+            <div class="puzzle-stats">
+              <div class="stat-item">
+                <span class="stat-label">Movimientos:</span>
+                <span class="stat-value" id="moveCount">0</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Tiempo:</span>
+                <span class="stat-value" id="timeCount">00:00</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Mejor:</span>
+                <span class="stat-value" id="bestScore">-</span>
+              </div>
+            </div>
+
+            <div class="puzzle-controls">
+              <select id="difficulty" class="difficulty-select">
+                <option value="3">Fácil (3×3)</option>
+                <option value="4" selected>Medio (4×4)</option>
+                <option value="5">Difícil (5×5)</option>
+              </select>
+              <button id="shuffleBtn" class="puzzle-btn">
+                🔄 Nueva Partida
+              </button>
+            </div>
+
+            <div id="puzzleBoard" class="puzzle-board"></div>
+
+            <div class="puzzle-footer">
+              <p class="puzzle-tip">
+                💡 Haz clic en las fichas adyacentes al espacio vacío para
+                moverlas
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Featured Pets Section -->
+        <section class="featured-pets">
+          <div class="section-header">
+            <h2 class="section-title">Mascotas Destacadas</h2>
+            <a href="#" class="view-all">Ver Todo</a>
+          </div>
+
+          <div class="filter-tabs">
+            <button class="tab active">Todos</button>
+            <button class="tab">Perdidos</button>
+            <button class="tab">Encontrados</button>
+            <button class="tab">Urgente</button>
+          </div>
+
+          <div class="pet-cards">
+            <!-- Pet Card 1 -->
+            <div class="pet-card urgent">
+              <div class="pet-card-image">
+                <img src="/PROYECTO_FINAL/assets/images/pug.jpg" alt="Toby" />
+              </div>
+              <div class="pet-card-content">
+                <div class="urgency-badge">URGENTE</div>
+                <h3 class="pet-name">Toby</h3>
+                <p class="pet-details">Perdido: Pug</p>
+                <p class="pet-meta">Hace 2 días • 1.5 Km de distancia</p>
+                <button class="contact-btn">Ver / Contactar</button>
+              </div>
+            </div>
+
+            <!-- Pet Card 2 -->
+            <div class="pet-card found">
+              <div class="pet-card-image">
+                <img
+                  src="/PROYECTO_FINAL/assets/images/siames.webp"
+                  alt="Michu"
+                />
+              </div>
+              <div class="pet-card-content">
+                <div class="found-badge">ENCONTRADO</div>
+                <h3 class="pet-name">Michu</h3>
+                <p class="pet-details">Encontrado: Gato Siamés</p>
+                <p class="pet-meta">Hace 5 horas • 1 Km de distancia</p>
+                <button class="contact-btn">Ver / Contactar</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <div class="logo-icon">
+              <img
+                src="/PROYECTO_FINAL/assets/images/ImagenPrincipal.jpg"
+                alt="PetSOS Logo"
+              />
+            </div>
+            <span class="logo-text">PetSOS</span>
+          </div>
+          <p class="footer-tagline">
+            Reuniendo mascotas y familias desde 2025.
+          </p>
+        </div>
+
+        <div class="footer-section">
+          <h4 class="footer-title">Navegación</h4>
+          <ul class="footer-links">
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Mascotas Perdidas</a></li>
+            <li><a href="#">Mascotas Encontradas</a></li>
+            <li><a href="#">Historias de Éxito</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4 class="footer-title">Soporte</h4>
+          <ul class="footer-links">
+            <li><a href="#">Contáctanos</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4 class="footer-title">Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#">Términos de Servicio</a></li>
+            <li><a href="#">Política de Privacidad</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2025 PetSOS. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+
+    <script src="/PROYECTO_FINAL/assets/js/auth.js"></script>
+    <script src="/PROYECTO_FINAL/assets/js/script.js"></script>
+    <script src="/PROYECTO_FINAL/assets/js/puzzle.js"></script>
+    <script>
+// SCRIPT DE DEPURACIÓN - TEMPORAL
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔍 Iniciando verificación...');
+    
+    fetch('/PROYECTO_FINAL/get_session.php')
+        .then(response => response.text())
+        .then(text => {
+            console.log('📄 Respuesta RAW del servidor:', text);
+            try {
+                const data = JSON.parse(text);
+                console.log('✅ JSON parseado:', data);
+                
+                // Actualizar manualmente el nombre
+                if (data.loggedIn) {
+                    const userNameSpan = document.querySelector('.user-name');
+                    if (userNameSpan) {
+                        userNameSpan.textContent = data.nombre;
+                        console.log('✅ Nombre actualizado a:', data.nombre);
+                    } else {
+                        console.error('❌ No se encontró el elemento .user-name');
+                    }
+                } else {
+                    console.log('ℹ️ Usuario no está logueado');
+                }
+            } catch (e) {
+                console.error('❌ Error al parsear JSON:', e);
+            }
+        })
+        .catch(error => {
+            console.error('❌ Error en fetch:', error);
+        });
+});
+</script>
+  </body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Refugios - PetSOS</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css" />
+    <link rel="stylesheet" href="../../assets/css/puzzle.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <nav class="navbar">
+        <div class="nav-left">
+          <div class="logo">
+            <div class="logo-icon">
+              <img
+                src="/PROYECTO_FINAL/assets/images/ImagenPrincipal.jpg"
+                alt="PetSOS Logo"
+              />
+            </div>
+            <span class="logo-text"
+              ><a
+                href="index.html"
+                style="text-decoration: none; color: inherit"
+                >PetSOS</a
+              ></span
+            >
+          </div>
+          <ul class="nav-menu">
+            <li>
+              <a href="refugios.html" class="nav-link active">Refugios</a>
+            </li>
+            <li><a href="encontrados.html" class="nav-link">Encontrados</a></li>
+            <li><a href="recursos.html" class="nav-link">Recursos</a></li>
+            <li><a href="perdidos.html" class="nav-link">Perdidos</a></li>
+          </ul>
+        </div>
+        <div class="nav-center">
+          <div class="search-container">
+            <input
+              type="text"
+              placeholder="Buscar refugios..."
+              class="search-input"
+            />
+            <div class="search-icon"></div>
+          </div>
+        </div>
+        <div class="nav-right">
+          <button class="publish-btn">Publicar Aviso</button>
+          <a href="index.html#map" class="map-view">Vista del Mapa</a>
+          <div class="notification-icon">
+            <img
+              src="/PROYECTO_FINAL/assets/images/Notificacion.png"
+              alt="Notificaciones"
+            />
+          </div>
+          <div class="profile-dropdown">
+            <div class="profile-avatar">
+              <img
+                src="/PROYECTO_FINAL/assets/images/Perfill.webp"
+                alt="Avatar"
+              />
+            </div>
+            <span>Jader O.</span>
+            <div class="dropdown-arrow"></div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section
+      class="page-header"
+      style="background: linear-gradient(135deg, #f57c00 0%, #ffb74d 100%)"
+    >
+      <div class="page-header-content">
+        <h1>Refugios de Animales</h1>
+        <p>Encuentra refugios cercanos y conoce mascotas que buscan un hogar</p>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="content-container-full">
+        <!-- Filters Section -->
+        <aside class="filters-sidebar">
+          <h3>Filtros</h3>
+
+          <div class="filter-group">
+            <h4>Distancia</h4>
+            <select id="distance-filter" class="filter-select">
+              <option value="all">Todas las distancias</option>
+              <option value="5">Menos de 5 km</option>
+              <option value="10">Menos de 10 km</option>
+              <option value="20">Menos de 20 km</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <h4>Servicios</h4>
+            <label
+              ><input type="checkbox" class="filter-checkbox" /> Adopción</label
+            >
+            <label
+              ><input type="checkbox" class="filter-checkbox" />
+              Veterinario</label
+            >
+            <label
+              ><input type="checkbox" class="filter-checkbox" /> Hospedaje
+              temporal</label
+            >
+            <label
+              ><input type="checkbox" class="filter-checkbox" />
+              Donaciones</label
+            >
+          </div>
+
+          <button
+            class="btn-secondary"
+            style="width: 100%"
+            onclick="resetFilters()"
+          >
+            Limpiar Filtros
+          </button>
+        </aside>
+
+        <!-- Shelters List -->
+        <section class="pets-grid-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              Refugios Cercanos (<span id="results-count">4</span>)
+            </h2>
+          </div>
+
+          <div class="shelters-list">
+            <!-- Shelter Card 1 -->
+            <div class="shelter-card">
+              <div class="shelter-image">
+                <img
+                  src="/PROYECTO_FINAL/assets/images/ImagenPrincipal.jpg"
+                  alt="Refugio"
+                  style="width: 100%; height: 100%; object-fit: cover"
+                />
+              </div>
+              <div class="shelter-info">
+                <h3>Refugio Esperanza Animal</h3>
+                <p class="shelter-address">📍 Calle 22 #15-30, Santa Marta</p>
+                <p class="shelter-distance">2.5 km de distancia</p>
+                <p class="shelter-description">
+                  Refugio dedicado al rescate y rehabilitación de perros y
+                  gatos. Ofrecemos servicio de adopción responsable.
+                </p>
+                <div class="shelter-services">
+                  <span class="service-tag">Adopción</span>
+                  <span class="service-tag">Veterinario</span>
+                  <span class="service-tag">Donaciones</span>
+                </div>
+                <div class="shelter-actions">
+                  <button
+                    class="btn-primary"
+                    onclick="alert('Contactando refugio...')"
+                  >
+                    Contactar
+                  </button>
+                  <button
+                    class="btn-secondary"
+                    onclick="alert('Ver más información...')"
+                  >
+                    Más Info
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Shelter Card 2 -->
+            <div class="shelter-card">
+              <div class="shelter-image">
+                <img
+                  src="/PROYECTO_FINAL/assets/images/ImagenPrincipal.jpg"
+                  alt="Refugio"
+                  style="width: 100%; height: 100%; object-fit: cover"
+                />
+              </div>
+              <div class="shelter-info">
+                <h3>Fundación Patitas Felices</h3>
+                <p class="shelter-address">📍 Av. del Río #45-12, Rodadero</p>
+                <p class="shelter-distance">4.8 km de distancia</p>
+                <p class="shelter-description">
+                  Fundación sin ánimo de lucro enfocada en rescate de animales
+                  en situación de calle.
+                </p>
+                <div class="shelter-services">
+                  <span class="service-tag">Adopción</span>
+                  <span class="service-tag">Hospedaje</span>
+                </div>
+                <div class="shelter-actions">
+                  <button
+                    class="btn-primary"
+                    onclick="alert('Contactando refugio...')"
+                  >
+                    Contactar
+                  </button>
+                  <button
+                    class="btn-secondary"
+                    onclick="alert('Ver más información...')"
+                  >
+                    Más Info
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Shelter Card 3 -->
+            <div class="shelter-card">
+              <div class="shelter-image">
+                <img
+                  src="/PROYECTO_FINAL/assets/images/ImagenPrincipal.jpg"
+                  alt="Refugio"
+                  style="width: 100%; height: 100%; object-fit: cover"
+                />
+              </div>
+              <div class="shelter-info">
+                <h3>Centro de Bienestar Animal</h3>
+                <p class="shelter-address">📍 Calle 30 #8-20, Mamatoco</p>
+                <p class="shelter-distance">6.2 km de distancia</p>
+                <p class="shelter-description">
+                  Centro integral con servicio veterinario, adopción y programas
+                  educativos.
+                </p>
+                <div class="shelter-services">
+                  <span class="service-tag">Veterinario</span>
+                  <span class="service-tag">Adopción</span>
+                  <span class="service-tag">Donaciones</span>
+                </div>
+                <div class="shelter-actions">
+                  <button
+                    class="btn-primary"
+                    onclick="alert('Contactando refugio...')"
+                  >
+                    Contactar
+                  </button>
+                  <button
+                    class="btn-secondary"
+                    onclick="alert('Ver más información...')"
+                  >
+                    Más Info
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Shelter Card 4 -->
+            <div class="shelter-card">
+              <div class="shelter-image">
+                <img
+                  src="/PROYECTO_FINAL/assets/images/ImagenPrincipal.jpg"
+                  alt="Refugio"
+                  style="width: 100%; height: 100%; object-fit: cover"
+                />
+              </div>
+              <div class="shelter-info">
+                <h3>Hogar Temporal Peludo</h3>
+                <p class="shelter-address">📍 Carrera 5 #18-45, Gaira</p>
+                <p class="shelter-distance">8.1 km de distancia</p>
+                <p class="shelter-description">
+                  Red de hogares temporales para animales rescatados mientras
+                  encuentran familia definitiva.
+                </p>
+                <div class="shelter-services">
+                  <span class="service-tag">Hospedaje</span>
+                  <span class="service-tag">Adopción</span>
+                </div>
+                <div class="shelter-actions">
+                  <button
+                    class="btn-primary"
+                    onclick="alert('Contactando refugio...')"
+                  >
+                    Contactar
+                  </button>
+                  <button
+                    class="btn-secondary"
+                    onclick="alert('Ver más información...')"
+                  >
+                    Más Info
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <div class="logo-icon">
+              <img
+                src="/PROYECTO_FINAL/assets/images/ImagenPrincipal.jpg"
+                alt="PetSOS Logo"
+              />
+            </div>
+            <span class="logo-text">PetSOS</span>
+          </div>
+          <p class="footer-tagline">
+            Reuniendo mascotas y familias desde 2025.
+          </p>
+        </div>
+
+        <div class="footer-section">
+          <h4 class="footer-title">Navegación</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="perdidos.html">Mascotas Perdidas</a></li>
+            <li><a href="encontrados.html">Mascotas Encontradas</a></li>
+            <li><a href="#">Historias de Éxito</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4 class="footer-title">Soporte</h4>
+          <ul class="footer-links">
+            <li><a href="#">Contáctanos</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4 class="footer-title">Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#">Términos de Servicio</a></li>
+            <li><a href="#">Política de Privacidad</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2025 PetSOS. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/script.js"></script>
+  </body>
+</html>

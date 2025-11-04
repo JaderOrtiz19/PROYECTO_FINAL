@@ -1,0 +1,455 @@
+/* ===================================
+   PUZZLE GAME STYLES - PetSOS Theme
+   =================================== */
+
+.puzzle-game-section {
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe0b2 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-top: 1.5rem;
+    box-shadow: 0 4px 20px rgba(255, 152, 0, 0.15);
+    border: 3px solid #ff9800;
+}
+
+.puzzle-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.puzzle-header h3 {
+    font-size: 1.8rem;
+    color: #e65100;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.puzzle-header p {
+    color: #f57c00;
+    font-size: 1rem;
+}
+
+/* Stats Section */
+.puzzle-stats {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ff9800;
+}
+
+/* Controls */
+.puzzle-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.difficulty-select {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #ff9800;
+    border-radius: 25px;
+    background: white;
+    color: #e65100;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.difficulty-select:hover {
+    background: #fff3e0;
+    transform: translateY(-2px);
+}
+
+.puzzle-btn {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+}
+
+.puzzle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 152, 0, 0.4);
+}
+
+.puzzle-btn:active {
+    transform: translateY(0);
+}
+
+/* Puzzle Board */
+.puzzle-board {
+    display: grid;
+    gap: 8px;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 16px;
+    margin: 0 auto;
+    max-width: 500px;
+    aspect-ratio: 1;
+    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Dynamic grid sizing based on difficulty */
+.puzzle-board[data-size="3"] {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.puzzle-board[data-size="4"] {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+}
+
+.puzzle-board[data-size="5"] {
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+}
+
+/* Puzzle Tiles */
+.puzzle-tile {
+    background: linear-gradient(145deg, #ffffff 0%, #fff8e1 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #e65100;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    border: 3px solid #ffb74d;
+    position: relative;
+    overflow: hidden;
+}
+
+.puzzle-tile::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(255, 183, 77, 0.2) 0%, 
+        rgba(255, 152, 0, 0.2) 100%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.puzzle-tile:hover::before {
+    opacity: 1;
+}
+
+.puzzle-tile.movable {
+    cursor: pointer;
+}
+
+.puzzle-tile.movable:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(255, 152, 0, 0.3);
+    border-color: #ff9800;
+}
+
+.puzzle-tile.movable:active {
+    transform: scale(0.98);
+}
+
+/* Empty tile */
+.puzzle-tile.empty {
+    background: rgba(255, 152, 0, 0.1);
+    border: 3px dashed #ffb74d;
+    box-shadow: none;
+    cursor: default;
+}
+
+/* Paw print decoration for tiles */
+.puzzle-tile:not(.empty)::after {
+    content: '🐾';
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 0.8rem;
+    opacity: 0.3;
+}
+
+/* Footer */
+.puzzle-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.puzzle-tip {
+    color: #f57c00;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Victory Modal */
+.victory-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: fadeIn 0.3s ease;
+}
+
+.victory-content {
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe0b2 100%);
+    padding: 3rem;
+    border-radius: 24px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    border: 4px solid #ff9800;
+    animation: bounceIn 0.5s ease;
+}
+
+.victory-content h2 {
+    font-size: 2.5rem;
+    color: #e65100;
+    margin-bottom: 1rem;
+}
+
+.victory-emoji {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: bounce 1s infinite;
+}
+
+.victory-stats {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.victory-stat {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.victory-stat:last-child {
+    margin-bottom: 0;
+}
+
+.victory-stat-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.victory-stat-value {
+    color: #ff9800;
+    font-weight: 700;
+}
+
+.victory-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.victory-btn {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.victory-btn-primary {
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+}
+
+.victory-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 152, 0, 0.4);
+}
+
+.victory-btn-secondary {
+    background: white;
+    color: #ff9800;
+    border: 2px solid #ff9800;
+}
+
+.victory-btn-secondary:hover {
+    background: #fff3e0;
+    transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Tile move animation */
+.puzzle-tile.moving {
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .puzzle-game-section {
+        padding: 1.5rem;
+    }
+
+    .puzzle-header h3 {
+        font-size: 1.5rem;
+    }
+
+    .puzzle-stats {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .stat-item {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .puzzle-board {
+        max-width: 100%;
+        padding: 1rem;
+    }
+
+    .puzzle-tile {
+        font-size: 1.5rem;
+    }
+
+    .victory-content {
+        padding: 2rem;
+    }
+
+    .victory-content h2 {
+        font-size: 2rem;
+    }
+
+    .victory-emoji {
+        font-size: 3rem;
+    }
+
+    .victory-buttons {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .puzzle-tile {
+        font-size: 1.2rem;
+        border-width: 2px;
+    }
+
+    .puzzle-board {
+        gap: 6px;
+        padding: 0.75rem;
+    }
+
+    .puzzle-controls {
+        flex-direction: column;
+    }
+
+    .difficulty-select,
+    .puzzle-btn {
+        width: 100%;
+    }
+}
+
+/* Special effects for completed puzzle */
+.puzzle-tile.completed {
+    animation: celebrate 0.6s ease;
+}
+
+@keyframes celebrate {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+    25% {
+        transform: scale(1.1) rotate(-5deg);
+    }
+    75% {
+        transform: scale(1.1) rotate(5deg);
+    }
+}
+
+/* Loading state */
+.puzzle-board.loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
