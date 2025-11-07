@@ -31,6 +31,18 @@ if (isset($_GET['action'])) {
                 exit;
             }
             break;
+            
+        // ** NUEVA IMPLEMENTACIÓN **
+        case 'actualizarPerfil':
+            // Esta acción recibe el POST del formulario de perfil
+            $controlador->procesarActualizacionPerfil();
+            break;
+            
+        // ** NUEVA IMPLEMENTACIÓN **
+        case 'eliminarCuenta':
+            // Esta acción se llama desde el botón de eliminar cuenta
+            $controlador->procesarEliminarCuenta();
+            break;
 
         case 'mostrarRegistro':
             // Mostrar el formulario de registro
@@ -59,7 +71,6 @@ if (isset($_GET['action'])) {
         exit;
     }
     
-    // Si no hay sesión, mostrar el formulario de inicio de sesión
+    // Si no hay sesión, mostrar el formulario de inicio de sesión por defecto
     $controlador->mostrarLogin();
 }
-?>

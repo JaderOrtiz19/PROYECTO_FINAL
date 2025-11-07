@@ -49,4 +49,37 @@ class Usuario
     
     return false;
 }
+
+/**
+     * Actualizar perfil de usuario (teléfono y dirección)
+     */
+    public function actualizarPerfil($correo_electronico, $telefono, $direccion)
+    {
+        $stmt = $this->conexion->prepare("UPDATE usuario SET telefono = ?, direccion = ? WHERE correo_electronico = ?");
+        $stmt->bind_param("sss", $telefono, $direccion, $correo_electronico);
+        return $stmt->execute();
+    }
+
+    /**
+     * Eliminar cuenta de usuario
+     */
+    public function eliminarCuenta($correo_electronico)
+    {
+        $stmt = $this->conexion->prepare("DELETE FROM usuario WHERE correo_electronico = ?");
+        $stmt->bind_param("s", $correo_electronico);
+        return $stmt->execute();
+    }
+
+    /**
+     * Obtener datos completos del usuario
+     */
+    public function obtenerDatosUsuario($correo_electronico)
+    {
+        $stmt = $this->conexion->prepare("SELECT nombre_usuario, correo_electronico, telefono, direccion FROM usuario WHERE correo_electronico = ?");
+        $stmt->bind_param("s", $correo_electronico);
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
 }

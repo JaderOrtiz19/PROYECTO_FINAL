@@ -176,9 +176,8 @@ class AuthSystem {
 
     goToProfile() {
         this.closeModal();
-        if (typeof showNotification === 'function') {
-            showNotification('Navegando a Mi Perfil...');
-        }
+        // Redirigir a la página de perfil
+        window.location.href = '/PROYECTO_FINAL/vista/auth/perfil.php';
     }
 
     goToMyPosts() {
