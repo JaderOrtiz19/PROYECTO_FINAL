@@ -182,3 +182,5 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
     <script src="<?php echo BASE_URL; ?>assets/js/auth.js"></script>
 </body>
 </html>
+
+/* Fin de archivo */
