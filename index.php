@@ -34,11 +34,11 @@ if (isset($_GET['action'])) {
                 exit;
             }
             break;
-            
+
         case 'actualizarPerfil':
             $controladorUsuario->procesarActualizacionPerfil();
             break;
-            
+
         case 'eliminarCuenta':
             $controladorUsuario->procesarEliminarCuenta();
             break;
@@ -53,6 +53,10 @@ if (isset($_GET['action'])) {
 
         case 'mostrarLogin':
             $controladorUsuario->mostrarLogin();
+            break;
+
+        case 'subirFotoPerfil':
+            $controladorUsuario->procesarSubidaFotoPerfil();
             break;
 
         // ========================================
@@ -84,7 +88,7 @@ if (isset($_GET['action'])) {
         header('Location: /PROYECTO_FINAL/vista/public/index.html');
         exit;
     }
-    
+
     // Si no hay sesión, mostrar el formulario de inicio de sesión por defecto
     $controladorUsuario->mostrarLogin();
 }
