@@ -21,12 +21,12 @@ class Mascota
         try {
             // 1. Insertar la mascota
             $stmt = $this->conexion->prepare(
-                "INSERT INTO mascotas (Nombre, Especie, Raza, Color, Edad, Sexo, Descripcion, Foto, Estado, idUsuario, FechaReporte, Ubicacion) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Perdido', ?, NOW(), ?)"
+                "INSERT INTO mascotas (Nombre, Especie, Raza, Color, Edad, Sexo, Descripcion, Foto, Estado, idUsuario, FechaReporte, Ubicacion, Latitud, Longitud) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Perdido', ?, NOW(), ?, ?, ?)"
             );
 
             $stmt->bind_param(
-                "ssssssssis",  // <-- Cambié la 'i' a la posición correcta
+                "ssssssssisdd",  // Agregué 'dd' para los decimales
                 $datos['nombre'],
                 $datos['especie'],
                 $datos['raza'],
@@ -35,8 +35,10 @@ class Mascota
                 $datos['sexo'],
                 $datos['descripcion'],
                 $datos['foto'],
-                $datos['idUsuario'],    // Este es el INT
-                $datos['ubicacion']      // Este es STRING
+                $datos['idUsuario'],
+                $datos['ubicacion'],
+                $datos['latitud'],      // NUEVO
+                $datos['longitud']      // NUEVO
             );
 
             if (!$stmt->execute()) {

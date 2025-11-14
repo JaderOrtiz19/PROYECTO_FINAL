@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PetSOS - Trae a Casa a Tu Mascota</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="/PROYECTO_FINAL/assets/css/mapa.css" />
     <link rel="stylesheet" href="/PROYECTO_FINAL/assets/css/styles.css" />
     <link rel="stylesheet" href="/PROYECTO_FINAL/assets/css/puzzle.css" />
     <link
@@ -135,12 +140,8 @@
               />
               <div class="search-icon-small"></div>
             </div>
-            <div class="map-placeholder">
-              <img
-                src="/PROYECTO_FINAL/assets/images/mapa.png"
-                alt="Mapa de mascotas perdidas y encontradas"
-              />
-            </div>
+            <!-- NUEVO: Mapa interactivo -->
+            <div id="map"></div>
           </div>
 
           <!-- PUZZLE GAME SECTION -->
@@ -201,8 +202,7 @@
             <button class="tab">Urgente</button>
           </div>
 
-          <div class="pet-cards">
-          </div>
+          <div class="pet-cards"></div>
         </section>
       </div>
     </main>
@@ -257,43 +257,45 @@
       </div>
     </footer>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/PROYECTO_FINAL/assets/js/mapa.js"></script>
     <script src="/PROYECTO_FINAL/assets/js/auth.js"></script>
     <script src="/PROYECTO_FINAL/assets/js/script.js"></script>
     <script src="/PROYECTO_FINAL/assets/js/inicio.js"></script>
     <script src="/PROYECTO_FINAL/assets/js/puzzle.js"></script>
     <script>
-// SCRIPT DE DEPURACIÓN - TEMPORAL
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🔍 Iniciando verificación...');
-    
-    fetch('/PROYECTO_FINAL/get_session.php')
-        .then(response => response.text())
-        .then(text => {
-            console.log('📄 Respuesta RAW del servidor:', text);
+      // SCRIPT DE DEPURACIÓN - TEMPORAL
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("🔍 Iniciando verificación...");
+
+        fetch("/PROYECTO_FINAL/get_session.php")
+          .then((response) => response.text())
+          .then((text) => {
+            console.log("📄 Respuesta RAW del servidor:", text);
             try {
-                const data = JSON.parse(text);
-                console.log('✅ JSON parseado:', data);
-                
-                // Actualizar manualmente el nombre
-                if (data.loggedIn) {
-                    const userNameSpan = document.querySelector('.user-name');
-                    if (userNameSpan) {
-                        userNameSpan.textContent = data.nombre;
-                        console.log('✅ Nombre actualizado a:', data.nombre);
-                    } else {
-                        console.error('❌ No se encontró el elemento .user-name');
-                    }
+              const data = JSON.parse(text);
+              console.log("✅ JSON parseado:", data);
+
+              // Actualizar manualmente el nombre
+              if (data.loggedIn) {
+                const userNameSpan = document.querySelector(".user-name");
+                if (userNameSpan) {
+                  userNameSpan.textContent = data.nombre;
+                  console.log("✅ Nombre actualizado a:", data.nombre);
                 } else {
-                    console.log('ℹ️ Usuario no está logueado');
+                  console.error("❌ No se encontró el elemento .user-name");
                 }
+              } else {
+                console.log("ℹ️ Usuario no está logueado");
+              }
             } catch (e) {
-                console.error('❌ Error al parsear JSON:', e);
+              console.error("❌ Error al parsear JSON:", e);
             }
-        })
-        .catch(error => {
-            console.error('❌ Error en fetch:', error);
-        });
-});
-</script>
+          })
+          .catch((error) => {
+            console.error("❌ Error en fetch:", error);
+          });
+      });
+    </script>
   </body>
 </html>

@@ -36,7 +36,7 @@ class ControladorMascota
         require_once 'modelo/Usuario.php';
         $usuarioModelo = new Usuario();
         $datosUsuario = $usuarioModelo->obtenerDatosUsuario($correoElectronico);
-        
+
         if (!$datosUsuario) {
             header('Location: /PROYECTO_FINAL/vista/public/perdidos.html?error=usuario_no_encontrado');
             exit;
@@ -53,7 +53,9 @@ class ControladorMascota
             'descripcion' => htmlspecialchars(trim($_POST['descripcion'] ?? '')),
             'ubicacion' => htmlspecialchars(trim($_POST['ubicacion'] ?? '')),
             'idUsuario' => $datosUsuario['idUsuario'] ?? 0,
-            'foto' => null
+            'foto' => null,
+            'latitud' => !empty($_POST['latitud']) ? floatval($_POST['latitud']) : null,
+            'longitud' => !empty($_POST['longitud']) ? floatval($_POST['longitud']) : null
         ];
 
         // Validar datos obligatorios
@@ -77,7 +79,7 @@ class ControladorMascota
 
         try {
             $idMascota = $this->modelo->registrarMascotaPerdida($datos);
-            
+
             if ($idMascota) {
                 header('Location: /PROYECTO_FINAL/vista/public/perdidos.html?success=reporte_creado&id=' . $idMascota);
                 exit;
@@ -98,7 +100,7 @@ class ControladorMascota
     public function obtenerMascotasPerdidas()
     {
         header('Content-Type: application/json');
-        
+
         try {
             $mascotas = $this->modelo->obtenerMascotasPerdidas();
             echo json_encode([
@@ -119,7 +121,7 @@ class ControladorMascota
     public function obtenerMascota()
     {
         header('Content-Type: application/json');
-        
+
         if (!isset($_GET['id'])) {
             echo json_encode(['success' => false, 'error' => 'ID no proporcionado']);
             exit;
@@ -127,7 +129,7 @@ class ControladorMascota
 
         try {
             $mascota = $this->modelo->obtenerMascotaPorId($_GET['id']);
-            
+
             if ($mascota) {
                 echo json_encode([
                     'success' => true,
@@ -171,7 +173,7 @@ class ControladorMascota
 
         try {
             $resultado = $this->modelo->actualizarEstado($idMascota, $nuevoEstado);
-            
+
             if ($resultado) {
                 header('Location: /PROYECTO_FINAL/vista/public/perdidos.html?success=estado_actualizado');
                 exit;
@@ -192,7 +194,7 @@ class ControladorMascota
     private function subirFoto($archivo)
     {
         $directorioDestino = $_SERVER['DOCUMENT_ROOT'] . '/PROYECTO_FINAL/assets/images/mascotas/';
-        
+
         // Crear directorio si no existe
         if (!file_exists($directorioDestino)) {
             mkdir($directorioDestino, 0777, true);

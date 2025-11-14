@@ -1,6 +1,6 @@
 // ==========================================
 // SISTEMA DE MASCOTAS DESTACADAS - PÁGINA INICIO
-// Carga mascotas perdidas desde la base de datos
+// Con modal de scroll mejorado
 // ==========================================
 
 let mascotasDestacadas = [];
@@ -12,9 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
     configurarBotonesHero();
 });
 
-/**
- * Cargar mascotas perdidas desde la base de datos
- */
 async function cargarMascotasDestacadas() {
     try {
         const response = await fetch('/PROYECTO_FINAL/index.php?action=obtenerMascotasPerdidas');
@@ -33,23 +30,17 @@ async function cargarMascotasDestacadas() {
     }
 }
 
-/**
- * Renderizar mascotas en la sección destacadas
- */
 function renderizarMascotasDestacadas() {
     const container = document.querySelector('.pet-cards');
     if (!container) return;
 
-    // Filtrar mascotas según el tab activo
     let mascotasFiltradas = [...mascotasDestacadas];
 
     if (filtroActivo === 'lost') {
         mascotasFiltradas = mascotasDestacadas.filter(m => m.Estado === 'Perdido');
     } else if (filtroActivo === 'found') {
-        // Por ahora no hay mascotas encontradas
         mascotasFiltradas = [];
     } else if (filtroActivo === 'urgent') {
-        // Considerar urgentes las reportadas en los últimos 3 días
         mascotasFiltradas = mascotasDestacadas.filter(m => {
             const fechaReporte = new Date(m.FechaReporte);
             const diasPerdido = Math.floor((new Date() - fechaReporte) / (1000 * 60 * 60 * 24));
@@ -76,7 +67,6 @@ function renderizarMascotasDestacadas() {
         return;
     }
 
-    // Renderizar mascotas (máximo 6 en la página principal)
     const mascotasMostrar = mascotasFiltradas.slice(0, 6);
 
     container.innerHTML = mascotasMostrar.map(pet => {
@@ -107,21 +97,14 @@ function renderizarMascotasDestacadas() {
     }).join('');
 }
 
-/**
- * Configurar tabs de filtros
- */
 function configurarFiltrosTabs() {
     const tabs = document.querySelectorAll('.filter-tabs .tab');
     
     tabs.forEach(tab => {
         tab.addEventListener('click', function() {
-            // Remover clase active de todos
             tabs.forEach(t => t.classList.remove('active'));
-            
-            // Agregar clase active al clickeado
             this.classList.add('active');
             
-            // Determinar filtro
             const texto = this.textContent.trim().toLowerCase();
             if (texto === 'todos') {
                 filtroActivo = 'all';
@@ -138,11 +121,7 @@ function configurarFiltrosTabs() {
     });
 }
 
-/**
- * Configurar botones del Hero
- */
 function configurarBotonesHero() {
-    // Botón "Reportar Mascota Perdida"
     const btnReportarPerdida = document.querySelector('.btn-primary');
     if (btnReportarPerdida && btnReportarPerdida.textContent.includes('Perdida')) {
         btnReportarPerdida.addEventListener('click', function() {
@@ -150,7 +129,6 @@ function configurarBotonesHero() {
         });
     }
 
-    // Botón "Reportar Mascota Encontrada"
     const btnReportarEncontrada = document.querySelector('.btn-secondary');
     if (btnReportarEncontrada && btnReportarEncontrada.textContent.includes('Encontrada')) {
         btnReportarEncontrada.addEventListener('click', function() {
@@ -158,7 +136,6 @@ function configurarBotonesHero() {
         });
     }
 
-    // Botón "Publicar Aviso" del header
     const btnPublicar = document.querySelector('.publish-btn');
     if (btnPublicar) {
         btnPublicar.addEventListener('click', function() {
@@ -166,7 +143,6 @@ function configurarBotonesHero() {
         });
     }
 
-    // Link "Ver Todo"
     const verTodoLink = document.querySelector('.view-all');
     if (verTodoLink) {
         verTodoLink.addEventListener('click', function(e) {
@@ -176,9 +152,6 @@ function configurarBotonesHero() {
     }
 }
 
-/**
- * Ver detalles de una mascota
- */
 async function verDetallesMascota(idMascota) {
     try {
         const response = await fetch(`/PROYECTO_FINAL/index.php?action=obtenerMascota&id=${idMascota}`);
@@ -196,7 +169,7 @@ async function verDetallesMascota(idMascota) {
 }
 
 /**
- * Mostrar modal con detalles de la mascota
+ * Modal mejorado con scroll personalizado
  */
 function mostrarModalDetalles(pet) {
     const fotoUrl = pet.Foto && pet.Foto !== 'default-pet.jpg' 
@@ -210,7 +183,7 @@ function mostrarModalDetalles(pet) {
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.innerHTML = `
-        <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-content">
             <button class="modal-close" onclick="cerrarModal()">&times;</button>
             <div class="modal-body">
                 <img src="${fotoUrl}" alt="${pet.Nombre}" 
@@ -266,17 +239,11 @@ function mostrarModalDetalles(pet) {
     });
 }
 
-/**
- * Cerrar modal
- */
 function cerrarModal() {
     const modal = document.querySelector('.modal-overlay');
     if (modal) modal.remove();
 }
 
-/**
- * Contactar al dueño
- */
 function contactarDueno(telefono) {
     if (telefono && telefono !== 'No disponible') {
         const mensaje = encodeURIComponent('Hola, vi tu reporte de mascota perdida en PetSOS. ¿Sigue perdida?');
@@ -286,9 +253,6 @@ function contactarDueno(telefono) {
     }
 }
 
-/**
- * Compartir publicación
- */
 function compartirPublicacion(petId) {
     const url = `${window.location.origin}/PROYECTO_FINAL/vista/public/perdidos.html?id=${petId}`;
     const texto = '¡Ayuda a encontrar esta mascota perdida en PetSOS!';
@@ -302,16 +266,12 @@ function compartirPublicacion(petId) {
             mostrarNotificacion('¡Gracias por compartir!', 'success');
         }).catch(err => console.log('Error al compartir:', err));
     } else {
-        // Fallback: copiar al portapapeles
         navigator.clipboard.writeText(url).then(() => {
             mostrarNotificacion('¡Enlace copiado al portapapeles!', 'success');
         });
     }
 }
 
-/**
- * Mostrar notificación
- */
 function mostrarNotificacion(mensaje, tipo = 'info') {
     const notif = document.createElement('div');
     notif.className = `alert alert-${tipo}`;
@@ -341,9 +301,6 @@ function mostrarNotificacion(mensaje, tipo = 'info') {
     }, 4000);
 }
 
-/**
- * Mostrar mensaje vacío
- */
 function mostrarMensajeVacio(mensaje) {
     const container = document.querySelector('.pet-cards');
     if (container) {

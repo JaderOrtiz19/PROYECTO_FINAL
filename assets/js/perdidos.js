@@ -1,9 +1,9 @@
 // ==========================================
 // SISTEMA DE MASCOTAS PERDIDAS - PetSOS
-// Actualizado para trabajar con Base de Datos
+// Actualizado con modal de scroll mejorado
 // ==========================================
 
-let lostPetsData = []; // Datos desde la BD
+let lostPetsData = [];
 let filteredPets = [];
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -15,9 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
     mostrarMensajes();
 });
 
-/**
- * Cargar mascotas perdidas desde la base de datos
- */
 async function cargarMascotasPerdidas() {
     try {
         const response = await fetch('/PROYECTO_FINAL/index.php?action=obtenerMascotasPerdidas');
@@ -31,18 +28,15 @@ async function cargarMascotasPerdidas() {
         } else {
             console.error('Error al cargar mascotas:', data.error);
             mostrarError('No se pudieron cargar las mascotas');
-            renderLostPets(); // Mostrar mensaje de vacío
+            renderLostPets();
         }
     } catch (error) {
         console.error('Error al cargar mascotas:', error);
         mostrarError('Error de conexión con el servidor');
-        renderLostPets(); // Mostrar mensaje de vacío
+        renderLostPets();
     }
 }
 
-/**
- * Renderizar mascotas en el grid
- */
 function renderLostPets() {
     const grid = document.getElementById('pets-grid');
     const resultsCount = document.getElementById('results-count');
@@ -89,42 +83,31 @@ function renderLostPets() {
     }).join('');
 }
 
-/**
- * Configurar filtros
- */
 function setupFilters() {
-    // Filtros de tipo de animal
     const checkboxes = document.querySelectorAll('.filter-checkbox');
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', applyFilters);
     });
     
-    // Filtro de distancia
     const distanceFilter = document.getElementById('distance-filter');
     if (distanceFilter) {
         distanceFilter.addEventListener('change', applyFilters);
     }
     
-    // Filtro de fecha
     const dateFilter = document.getElementById('date-filter');
     if (dateFilter) {
         dateFilter.addEventListener('change', applyFilters);
     }
     
-    // Filtro de urgentes
     const urgentFilter = document.getElementById('urgent-filter');
     if (urgentFilter) {
         urgentFilter.addEventListener('change', applyFilters);
     }
 }
 
-/**
- * Aplicar filtros
- */
 function applyFilters() {
     let result = [...lostPetsData];
     
-    // Filtrar por tipo
     const checkedTypes = Array.from(document.querySelectorAll('.filter-checkbox:checked'))
         .map(cb => cb.dataset.filter);
     
@@ -137,7 +120,6 @@ function applyFilters() {
         });
     }
     
-    // Filtrar por fecha
     const dateValue = document.getElementById('date-filter').value;
     if (dateValue !== 'all') {
         const now = new Date();
@@ -157,9 +139,6 @@ function applyFilters() {
     renderLostPets();
 }
 
-/**
- * Configurar ordenamiento
- */
 function setupSort() {
     const sortSelect = document.getElementById('sort-select');
     if (sortSelect) {
@@ -175,9 +154,6 @@ function setupSort() {
     }
 }
 
-/**
- * Configurar búsqueda
- */
 function setupSearch() {
     const searchInput = document.querySelector('.search-input');
     if (searchInput) {
@@ -196,19 +172,12 @@ function setupSearch() {
     }
 }
 
-/**
- * Resetear filtros
- */
 function resetFilters() {
-    // Resetear checkboxes
     document.querySelectorAll('.filter-checkbox').forEach(cb => cb.checked = true);
-    
-    // Resetear selects
     document.getElementById('distance-filter').value = 'all';
     document.getElementById('date-filter').value = 'all';
     document.getElementById('urgent-filter').checked = false;
     
-    // Resetear búsqueda
     const searchInput = document.querySelector('.search-input');
     if (searchInput) searchInput.value = '';
     
@@ -216,9 +185,6 @@ function resetFilters() {
     renderLostPets();
 }
 
-/**
- * Mostrar detalles de mascota
- */
 async function showPetDetails(idMascota) {
     try {
         const response = await fetch(`/PROYECTO_FINAL/index.php?action=obtenerMascota&id=${idMascota}`);
@@ -236,7 +202,7 @@ async function showPetDetails(idMascota) {
 }
 
 /**
- * Mostrar modal con detalles
+ * Modal mejorado con scroll personalizado
  */
 function mostrarModalDetalles(pet) {
     const fotoUrl = pet.Foto && pet.Foto !== 'default-pet.jpg' 
@@ -250,7 +216,7 @@ function mostrarModalDetalles(pet) {
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.innerHTML = `
-        <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">&times;</button>
             <div class="modal-body">
                 <img src="${fotoUrl}" alt="${pet.Nombre}" 
@@ -282,7 +248,7 @@ function mostrarModalDetalles(pet) {
                 </div>
 
                 <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                    <button class="btn-primary" onclick="contactOwner('${pet.telefono || 'No disponible'}')" style="flex: 1; padding: 1rem; border: none; border-radius: 8px; cursor: pointer;">
+                    <button class="btn-primary" onclick="contactOwner('${pet.telefono || ''}')" style="flex: 1; padding: 1rem; border: none; border-radius: 8px; cursor: pointer;">
                         📞 Contactar Dueño
                     </button>
                     <button class="btn-secondary" onclick="sharePost(${pet.idMascota})" style="flex: 1; padding: 1rem; border: none; border-radius: 8px; cursor: pointer;">
@@ -306,9 +272,6 @@ function mostrarModalDetalles(pet) {
     });
 }
 
-/**
- * Configurar botón de publicar
- */
 function configurarBotonPublicar() {
     const botonPublicar = document.querySelector('.publish-btn');
     if (botonPublicar) {
@@ -316,13 +279,10 @@ function configurarBotonPublicar() {
     }
 }
 
-/**
- * Mostrar formulario de reporte
- */
 function mostrarFormularioReporte() {
     const modalHTML = `
         <div class="modal-overlay" onclick="cerrarModalSiClickFuera(event)">
-            <div class="modal-content" style="max-width: 700px; max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
+            <div class="modal-content" onclick="event.stopPropagation()">
                 <button class="modal-close" onclick="closeModal()">&times;</button>
                 <div class="modal-body">
                     <h2 style="text-align: center; margin-bottom: 1.5rem;">🐾 Reportar Mascota Perdida</h2>
@@ -374,6 +334,15 @@ function mostrarFormularioReporte() {
                         </div>
 
                         <div class="form-group">
+                            <label>Ubicación exacta en el mapa (Opcional pero recomendado)</label>
+                            <button type="button" id="btnSelectorUbicacion" class="btn-select-location" onclick="abrirSelectorUbicacion()">
+                                Seleccionar en el mapa
+                            </button>
+                            <input type="hidden" id="latitudInput" name="latitud">
+                            <input type="hidden" id="longitudInput" name="longitud">
+                        </div>
+
+                        <div class="form-group">
                             <label>Descripción detallada *</label>
                             <textarea name="descripcion" required class="form-input" rows="4" placeholder="Describe características especiales, comportamiento, última vez que lo viste, etc."></textarea>
                         </div>
@@ -398,9 +367,6 @@ function mostrarFormularioReporte() {
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 }
 
-/**
- * Previsualizar imagen
- */
 function previsualizarImagen(event) {
     const file = event.target.files[0];
     if (file) {
@@ -417,9 +383,6 @@ function previsualizarImagen(event) {
     }
 }
 
-/**
- * Cerrar modal
- */
 function closeModal() {
     const modal = document.querySelector('.modal-overlay');
     if (modal) modal.remove();
@@ -431,9 +394,6 @@ function cerrarModalSiClickFuera(event) {
     }
 }
 
-/**
- * Contactar dueño
- */
 function contactOwner(phone) {
     if (phone && phone !== 'No disponible') {
         const mensaje = encodeURIComponent('Hola, vi tu reporte de mascota perdida en PetSOS. ¿Sigue perdida?');
@@ -443,9 +403,6 @@ function contactOwner(phone) {
     }
 }
 
-/**
- * Compartir publicación
- */
 function sharePost(petId) {
     const url = `${window.location.origin}/PROYECTO_FINAL/vista/public/perdidos.html?id=${petId}`;
     const texto = 'Ayuda a encontrar esta mascota perdida en PetSOS';
@@ -459,23 +416,18 @@ function sharePost(petId) {
             mostrarNotificacion('¡Gracias por compartir!', 'success');
         }).catch(err => console.log('Error al compartir:', err));
     } else {
-        // Fallback: copiar al portapapeles
         navigator.clipboard.writeText(url).then(() => {
             mostrarNotificacion('¡Enlace copiado al portapapeles!', 'success');
         });
     }
 }
 
-/**
- * Mostrar mensajes de éxito/error
- */
 function mostrarMensajes() {
     const params = new URLSearchParams(window.location.search);
     
     if (params.get('success') === 'reporte_creado') {
         mostrarNotificacion('¡Reporte creado exitosamente! Tu mascota ha sido publicada.', 'success');
         window.history.replaceState({}, document.title, window.location.pathname);
-        // Recargar mascotas
         setTimeout(() => cargarMascotasPerdidas(), 1000);
     }
     
@@ -490,9 +442,6 @@ function mostrarMensajes() {
     }
 }
 
-/**
- * Mostrar notificación
- */
 function mostrarNotificacion(mensaje, tipo = 'info') {
     const notif = document.createElement('div');
     notif.className = `alert alert-${tipo}`;
@@ -518,9 +467,6 @@ function mostrarNotificacion(mensaje, tipo = 'info') {
     }, 4000);
 }
 
-/**
- * Mostrar error
- */
 function mostrarError(mensaje) {
     mostrarNotificacion(mensaje, 'error');
 }

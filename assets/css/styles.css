@@ -1549,3 +1549,423 @@ body {
         padding: 4px;
     }
 }
+
+/* ==========================================
+   ESTILOS GLOBALES DE SCROLL PERSONALIZADOS
+   ========================================== */
+
+/* Barra de scroll global para toda la página */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #e3f2fd;
+    border-radius: 10px;
+    border: 2px solid #f8f9fa;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #1e88e5 0%, #1565c0 100%);
+    border-radius: 10px;
+    border: 2px solid #e3f2fd;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #1565c0 0%, #0d47a1 100%);
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-corner {
+    background: #f8f9fa;
+}
+
+/* Para Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #1e88e5 #e3f2fd;
+}
+
+/* ==========================================
+   MODAL CON SCROLL MEJORADO
+   ========================================== */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.2s ease-out;
+    padding: 1rem;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 0;
+    max-width: 600px;
+    width: 90%;
+    max-height: 85vh;
+    position: relative;
+    animation: slideUp 0.3s ease-out;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-close {
+    position: sticky;
+    top: 0;
+    right: 0;
+    float: right;
+    background: white;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #666;
+    line-height: 1;
+    padding: 1rem;
+    width: 50px;
+    height: 50px;
+    z-index: 10;
+    border-radius: 0 16px 0 8px;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    background: #fee;
+    color: #d32f2f;
+    transform: scale(1.1);
+}
+
+.modal-body {
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+    padding: 1rem 2rem 2rem 2rem;
+}
+
+/* Scroll personalizado para el modal */
+.modal-body::-webkit-scrollbar {
+    width: 10px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: #e3f2fd;
+    border-radius: 10px;
+    margin: 10px 0;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #1e88e5 0%, #1565c0 100%);
+    border-radius: 10px;
+    border: 2px solid #e3f2fd;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #1565c0 0%, #0d47a1 100%);
+}
+
+/* Para Firefox en modales */
+.modal-body {
+    scrollbar-width: thin;
+    scrollbar-color: #1e88e5 #e3f2fd;
+}
+
+/* ==========================================
+   SIDEBAR DE FILTROS CON SCROLL
+   ========================================== */
+
+.filters-sidebar {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+    max-height: calc(100vh - 120px);
+    position: sticky;
+    top: 90px;
+    overflow-y: auto;
+}
+
+.filters-sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.filters-sidebar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.filters-sidebar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #64b5f6 0%, #1e88e5 100%);
+    border-radius: 10px;
+}
+
+.filters-sidebar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #1e88e5 0%, #1565c0 100%);
+}
+
+/* ==========================================
+   GRID DE MASCOTAS CON SCROLL
+   ========================================== */
+
+.pets-grid-section {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+}
+
+.pets-grid-section::-webkit-scrollbar {
+    width: 10px;
+}
+
+.pets-grid-section::-webkit-scrollbar-track {
+    background: #e3f2fd;
+    border-radius: 10px;
+    margin: 10px 0;
+}
+
+.pets-grid-section::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #1e88e5 0%, #1565c0 100%);
+    border-radius: 10px;
+    border: 2px solid #e3f2fd;
+}
+
+.pets-grid-section::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #1565c0 0%, #0d47a1 100%);
+}
+
+/* ==========================================
+   RECURSOS CON SCROLL
+   ========================================== */
+
+.resources-container {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+
+.resources-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.resources-container::-webkit-scrollbar-track {
+    background: #f3e5f5;
+    border-radius: 10px;
+}
+
+.resources-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ba68c8 0%, #7b1fa2 100%);
+    border-radius: 10px;
+}
+
+.resources-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #7b1fa2 0%, #4a148c 100%);
+}
+
+/* ==========================================
+   SHELTERS LIST CON SCROLL
+   ========================================== */
+
+.shelters-list {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.shelters-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.shelters-list::-webkit-scrollbar-track {
+    background: #fff3e0;
+    border-radius: 10px;
+}
+
+.shelters-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ffb74d 0%, #f57c00 100%);
+    border-radius: 10px;
+}
+
+.shelters-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #f57c00 0%, #e65100 100%);
+}
+
+/* ==========================================
+   FORMULARIOS CON SCROLL (para modales largos)
+   ========================================== */
+
+form {
+    max-height: 70vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 0.5rem;
+}
+
+form::-webkit-scrollbar {
+    width: 8px;
+}
+
+form::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+form::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #64b5f6 0%, #1e88e5 100%);
+    border-radius: 10px;
+}
+
+form::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #1e88e5 0%, #1565c0 100%);
+}
+
+/* ==========================================
+   TEXTAREA CON SCROLL
+   ========================================== */
+
+textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* ==========================================
+   PERFIL PAGE CON SCROLL
+   ========================================== */
+
+.profile-main {
+    min-height: calc(100vh - 70px);
+    max-height: calc(100vh - 70px);
+    overflow-y: auto;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 3rem 2rem;
+}
+
+.profile-main::-webkit-scrollbar {
+    width: 10px;
+}
+
+.profile-main::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.profile-main::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #1e88e5 0%, #1565c0 100%);
+    border-radius: 10px;
+}
+
+.profile-main::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #1565c0 0%, #0d47a1 100%);
+}
+
+/* ==========================================
+   DROPDOWN MENUS CON SCROLL
+   ========================================== */
+
+select {
+    cursor: pointer;
+}
+
+select::-webkit-scrollbar {
+    width: 10px;
+}
+
+select::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+select::-webkit-scrollbar-thumb {
+    background: #64b5f6;
+    border-radius: 5px;
+}
+
+/* ==========================================
+   ANIMACIONES
+   ========================================== */
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 768px) {
+    .modal-content {
+        max-height: 90vh;
+        width: 95%;
+        margin: 0.5rem;
+    }
+    
+    .modal-body {
+        padding: 1rem;
+    }
+    
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .modal-body::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .filters-sidebar {
+        max-height: 60vh;
+    }
+    
+    .pets-grid-section {
+        max-height: none;
+        overflow-y: visible;
+    }
+}
+
+@media (max-width: 480px) {
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        border: 1px solid #e3f2fd;
+    }
+}
