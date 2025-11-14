@@ -5,17 +5,21 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 require_once 'controlador/ControladorUsuario.php';
+require_once 'controlador/ControladorMascota.php';
 
-// Crear una instancia del controlador
-$controlador = new ControladorUsuario();
+// Crear instancias de los controladores
+$controladorUsuario = new ControladorUsuario();
+$controladorMascota = new ControladorMascota();
 
 // Verificar si se ha especificado una acción en la URL
 if (isset($_GET['action'])) {
     switch ($_GET['action']) {
+        // ========================================
+        // RUTAS DE USUARIO
+        // ========================================
         case 'iniciarSesion':
-            // Verificar que los datos del POST existan
             if (isset($_POST['correo_electronico']) && isset($_POST['contrasena'])) {
-                $controlador->iniciarSesion($_POST['correo_electronico'], $_POST['contrasena']);
+                $controladorUsuario->iniciarSesion($_POST['correo_electronico'], $_POST['contrasena']);
             } else {
                 header('Location: /PROYECTO_FINAL/index.php?error=datos_invalidos');
                 exit;
@@ -23,45 +27,55 @@ if (isset($_GET['action'])) {
             break;
 
         case 'registrar':
-            // Verificar que los datos del POST existan
             if (isset($_POST['nombre_usuario']) && isset($_POST['correo_electronico']) && isset($_POST['contrasena'])) {
-                $controlador->registrarUsuario($_POST['nombre_usuario'], $_POST['correo_electronico'], $_POST['contrasena']);
+                $controladorUsuario->registrarUsuario($_POST['nombre_usuario'], $_POST['correo_electronico'], $_POST['contrasena']);
             } else {
                 header('Location: /PROYECTO_FINAL/index.php?action=mostrarRegistro&error=datos_invalidos');
                 exit;
             }
             break;
             
-        // ** NUEVA IMPLEMENTACIÓN **
         case 'actualizarPerfil':
-            // Esta acción recibe el POST del formulario de perfil
-            $controlador->procesarActualizacionPerfil();
+            $controladorUsuario->procesarActualizacionPerfil();
             break;
             
-        // ** NUEVA IMPLEMENTACIÓN **
         case 'eliminarCuenta':
-            // Esta acción se llama desde el botón de eliminar cuenta
-            $controlador->procesarEliminarCuenta();
+            $controladorUsuario->procesarEliminarCuenta();
             break;
 
         case 'mostrarRegistro':
-            // Mostrar el formulario de registro
-            $controlador->mostrarRegistro();
+            $controladorUsuario->mostrarRegistro();
             break;
 
         case 'cerrarSesion':
-            // Cerrar sesión
-            $controlador->cerrarSesion();
+            $controladorUsuario->cerrarSesion();
             break;
 
         case 'mostrarLogin':
-            // Mostrar el formulario de login
-            $controlador->mostrarLogin();
+            $controladorUsuario->mostrarLogin();
+            break;
+
+        // ========================================
+        // RUTAS DE MASCOTAS
+        // ========================================
+        case 'reportarMascotaPerdida':
+            $controladorMascota->reportarMascotaPerdida();
+            break;
+
+        case 'obtenerMascotasPerdidas':
+            $controladorMascota->obtenerMascotasPerdidas();
+            break;
+
+        case 'obtenerMascota':
+            $controladorMascota->obtenerMascota();
+            break;
+
+        case 'actualizarEstadoMascota':
+            $controladorMascota->actualizarEstado();
             break;
 
         default:
-            // Si la acción no es reconocida, mostrar el login
-            $controlador->mostrarLogin();
+            $controladorUsuario->mostrarLogin();
             break;
     }
 } else {
@@ -72,5 +86,5 @@ if (isset($_GET['action'])) {
     }
     
     // Si no hay sesión, mostrar el formulario de inicio de sesión por defecto
-    $controlador->mostrarLogin();
+    $controladorUsuario->mostrarLogin();
 }

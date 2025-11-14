@@ -1,13 +1,11 @@
 <?php
 session_start();
 
-// Definir la base URL de tu proyecto.
-// ¡Esta línea es la clave para corregir las rutas estáticas!
+// Definir la base URL de tu proyecto
 const BASE_URL = '/PROYECTO_FINAL/'; 
 
 // Verificar si hay sesión activa
 if (!isset($_SESSION['usuario'])) {
-    // Usamos BASE_URL para redirigir
     header('Location: ' . BASE_URL . 'index.php?action=mostrarLogin');
     exit;
 }
@@ -49,15 +47,19 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
             <div class="nav-left">
                 <div class="logo">
                     <div class="logo-icon">
-                        <img src="<?php echo BASE_URL; ?>assets/images/logo_icon.webp" alt="Logo Icon">
+                        <img src="<?php echo BASE_URL; ?>assets/images/ImagenPrincipal.jpg" alt="Logo Icon">
                     </div>
                     <a href="<?php echo BASE_URL; ?>vista/public/index.html" class="logo-text">PetSOS</a>
                 </div>
             </div>
             <div class="nav-right">
-                <button class="user-avatar-btn" onclick="new AuthSystem().showProfileModal()">
-                    <img src="<?php echo BASE_URL; ?>assets/images/Perfill.webp" alt="Avatar" class="user-avatar">
-                </button>
+                <div class="profile-dropdown">
+                    <div class="profile-avatar">
+                        <img src="<?php echo BASE_URL; ?>assets/images/Perfill.webp" alt="Avatar">
+                    </div>
+                    <span class="user-name"><?php echo htmlspecialchars($nombre_usuario); ?></span>
+                    <div class="dropdown-arrow"></div>
+                </div>
             </div>
         </nav>
     </header>
@@ -149,7 +151,7 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
                 editBtn.style.display = 'none';
                 saveBtn.style.display = 'inline-block';
             } else {
-                // Deshabilitar campos y restaurar estado (aunque el submit recarga la página)
+                // Deshabilitar campos y restaurar estado
                 telefonoInput.setAttribute('readonly', 'readonly');
                 direccionInput.setAttribute('readonly', 'readonly');
                 
@@ -164,13 +166,12 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
         function confirmarEliminacion() {
             if (confirm('⚠️ ¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.')) {
                 if (confirm('⚠️ ÚLTIMA ADVERTENCIA: Se eliminarán todos tus datos permanentemente. ¿Continuar?')) {
-                    // La eliminación apunta al enrutador central (index.php) usando BASE_URL
                     window.location.href = '<?php echo BASE_URL; ?>index.php?action=eliminarCuenta';
                 }
             }
         }
 
-        // Prevenir envío si no está en modo edición (en caso de que alguien fuerce el botón)
+        // Prevenir envío si no está en modo edición
         document.getElementById('profileForm').addEventListener('submit', function(e) {
             if (document.getElementById('telefono').hasAttribute('readonly')) {
                 e.preventDefault();
@@ -182,5 +183,3 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
     <script src="<?php echo BASE_URL; ?>assets/js/auth.js"></script>
 </body>
 </html>
-
-/* Fin de archivo */

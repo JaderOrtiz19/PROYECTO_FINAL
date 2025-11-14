@@ -2,6 +2,81 @@
    ESTILOS DE LA PÁGINA DE PERFIL - PetSOS
    ========================================== */
 
+/* Logo Icon */
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #1e88e5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Profile Dropdown - Sincronizado con index.html */
+.profile-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+    position: relative;
+}
+
+.profile-dropdown:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.profile-dropdown .user-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #334155;
+    white-space: nowrap;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #e0e0e0;
+    flex-shrink: 0;
+    transition: border-color 0.2s ease;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-dropdown:hover .profile-avatar {
+    border-color: #1e88e5;
+}
+
+.dropdown-arrow {
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid #64748b;
+    border-bottom: 2px solid #64748b;
+    transform: rotate(45deg);
+    margin-left: 4px;
+    flex-shrink: 0;
+}
+
+/* Main Profile Content */
 .profile-main {
     min-height: calc(100vh - 70px);
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -59,19 +134,40 @@
     border-radius: 16px;
     padding: 3rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
 }
 
-/* Formulario */
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+/* Secciones del Perfil */
+.profile-section {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.profile-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.profile-section h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1e293b;
     margin-bottom: 1.5rem;
 }
 
+.profile-section p {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+/* Form Groups */
 .form-group {
     display: flex;
     flex-direction: column;
+    margin-bottom: 1.5rem;
 }
 
 .form-group label {
@@ -81,7 +177,7 @@
     margin-bottom: 0.5rem;
 }
 
-.form-input {
+.form-group input {
     width: 100%;
     padding: 0.875rem 1rem;
     border: 2px solid #e2e8f0;
@@ -93,20 +189,20 @@
     transition: all 0.3s ease;
 }
 
-.form-input:focus {
+.form-group input:focus {
     outline: none;
     border-color: #3b82f6;
     background: white;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.form-input[readonly] {
+.form-group input[readonly] {
     background: #f1f5f9;
     color: #64748b;
     cursor: not-allowed;
 }
 
-.form-input.editable {
+.form-group input.editable {
     background: white;
     border-color: #fbbf24;
     animation: highlight 0.5s ease;
@@ -117,22 +213,64 @@
     100% { background: white; }
 }
 
-/* Botones de Acción */
-.form-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 2.5rem;
-    padding-top: 2rem;
-    border-top: 2px solid #f1f5f9;
-}
-
-.form-actions-right {
+/* Profile Actions (Botones principales) */
+.profile-actions {
     display: flex;
     gap: 1rem;
+    margin-top: 1.5rem;
 }
 
-.btn-delete {
+.btn-edit,
+.btn-save {
+    padding: 0.875rem 1.75rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-edit {
+    border: 2px solid #94a3b8;
+    background: white;
+    color: #64748b;
+}
+
+.btn-edit:hover {
+    background: #f1f5f9;
+    border-color: #64748b;
+    color: #334155;
+    transform: translateY(-2px);
+}
+
+.btn-save {
+    border: none;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+}
+
+.btn-save:active {
+    transform: translateY(0);
+}
+
+/* Danger Zone */
+.danger-zone {
+    border: 2px solid #fee2e2;
+    background: #fef2f2;
+}
+
+.danger-zone h2 {
+    color: #991b1b;
+}
+
+.btn-danger {
     padding: 0.875rem 1.75rem;
     border: 2px solid #ef4444;
     background: white;
@@ -145,54 +283,11 @@
     font-family: 'Inter', sans-serif;
 }
 
-.btn-delete:hover {
+.btn-danger:hover {
     background: #ef4444;
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-}
-
-.btn-edit {
-    padding: 0.875rem 1.75rem;
-    border: 2px solid #94a3b8;
-    background: white;
-    color: #64748b;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: 'Inter', sans-serif;
-}
-
-.btn-edit:hover {
-    background: #f1f5f9;
-    border-color: #64748b;
-    color: #334155;
-    transform: translateY(-2px);
-}
-
-.btn-save {
-    padding: 0.875rem 2rem;
-    border: none;
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    color: white;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: 'Inter', sans-serif;
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-}
-
-.btn-save:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
-}
-
-.btn-save:active {
-    transform: translateY(0);
 }
 
 /* Responsive */
@@ -209,25 +304,22 @@
         font-size: 2rem;
     }
 
-    .form-row {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .form-actions {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .form-actions-right {
-        width: 100%;
+    .profile-actions {
         flex-direction: column;
     }
 
-    .btn-delete,
     .btn-edit,
-    .btn-save {
+    .btn-save,
+    .btn-danger {
         width: 100%;
+    }
+
+    .profile-dropdown .user-name {
+        display: none;
+    }
+    
+    .profile-dropdown {
+        padding: 4px;
     }
 }
 

@@ -157,6 +157,15 @@ class AuthSystem {
         });
     }
 
+    // ✅ MÉTODO ADICIONAL: Para compatibilidad con perfil.php
+    showProfileModal() {
+        if (this.isLoggedIn()) {
+            this.showLoggedInMenu();
+        } else {
+            this.showGuestMenu();
+        }
+    }
+
     // Cerrar modal
     closeModal() {
         const modal = document.querySelector('.modal-overlay');
@@ -176,7 +185,6 @@ class AuthSystem {
 
     goToProfile() {
         this.closeModal();
-        // Redirigir a la página de perfil
         window.location.href = '/PROYECTO_FINAL/vista/auth/perfil.php';
     }
 
